@@ -148,16 +148,23 @@ const NiftiViewer = ({ s3Uri, viewPlane: initialViewPlane = 'axial' }) => {
 
 
     switch (orientation) {
-      case 'sagittal': // X-plane (view along X-axis)
-        width = ny; height = nz;
-        sliceIndex = Math.max(0, Math.min(sliceIndex, nx - 1));
-        getVoxelOffset = (y_slice, z_slice) => (z_slice * nx * ny) + (y_slice * nx) + sliceIndex;
-        break;
-      case 'coronal':  // Y-plane (view along Y-axis)
-        width = nx; height = nz;
-        sliceIndex = Math.max(0, Math.min(sliceIndex, ny - 1));
-        getVoxelOffset = (x_slice, z_slice) => (z_slice * nx * ny) + (sliceIndex * nx) + x_slice;
-        break;
+      case 'sagittal': // X-plane (view along X-axis), rotated 180 degrees
+      width = ny; height = nz;
+      sliceIndex = Math.max(0, Math.min(sliceIndex, nx - 1));
+      getVoxelOffset = (y_slice, z_slice) => {
+        const rotated_y = ny - 1 - y_slice;
+        const rotated_z = nz - 1 - z_slice;
+        return (rotated_z * nx * ny) + (rotated_y * nx) + sliceIndex;
+      };
+      break;
+      case 'coronal':  // Y-plane (view along Y-axis), rotated 180 degrees
+      width = nx; height = nz;
+      sliceIndex = Math.max(0, Math.min(sliceIndex, ny - 1));
+      getVoxelOffset = (x_slice, z_slice) => {
+        const rotated_x = nx - 1 - x_slice;
+        const rotated_z = nz - 1 - z_slice;
+        return (rotated_z * nx * ny) + (sliceIndex * nx) + rotated_x;
+      };
       case 'axial':    // Z-plane (view along Z-axis)
       default:
         width = nx; height = ny;

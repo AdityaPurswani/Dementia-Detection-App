@@ -63,7 +63,7 @@ function Home() {
       {/* Header Section */}
       <div className="absolute top-10 left-0 right-0 text-center z-20">
         <h1 className="text-5xl font-bold text-blue-500 mb-4">
-          Welcome to the Dementia Detection Platform
+        Clinical Decision Support Platform: CogNID-Assist
         </h1>
         <p className="text-lg text-gray-300">
           Participate in our study by uploading MRI scans and medical reports to contribute to early detection research.
